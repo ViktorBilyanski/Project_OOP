@@ -26,3 +26,15 @@ bool CheckingAccount::withdraw(double amount) {
     }
     return true;
 }
+
+double CheckingAccount::getTransactionFee() const { return transactionFee; }
+double CheckingAccount::getOverdraftLimit() const { return overdraftLimit; }
+string CheckingAccount::getType() const { return "Razplashtatelna"; }
+
+void CheckingAccount::displayInfo() const {
+    cout << "  [RAZPLASHTATELNA]";
+    Account::displayInfo();
+    cout << "                   Taksa teglene: "
+         << fixed << setprecision(2) << transactionFee
+         << " lv. | Overdraft limit: " << overdraftLimit << " lv.\n";
+}
