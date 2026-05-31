@@ -44,3 +44,71 @@ double readDouble(const string& prompt) {
         cout << "  [GRESHKA] Vuvedi validno chislo!\n";
     }
 }
+
+// Helper: чете цял ред (за имена с интервали)
+string readLine(const string& prompt) {
+    string val;
+    cout << prompt;
+    getline(cin, val);
+    return val;
+}
+
+// Helper: чете string без интервали
+string readWord(const string& prompt) {
+    string val;
+    cout << prompt;
+    cin >> val;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    return val;
+}
+
+int main() {
+    BankSystem bank("OOP Bank Bulgaria");
+    int choice = -1;
+
+    while (choice != 0) {
+        printMenu();
+
+        if (!(cin >> choice)) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "  [GRESHKA] Vuvedi число!\n";
+            continue;
+        }
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        cout << "\n";
+
+        if (choice == 1) {
+            // Добави спестовна сметка
+            cout << "--- Nova spestovna smetka ---\n";
+            string num  = readWord("  Nomer na smetka (npr. BG01SAV): ");
+            string name = readLine("  Ime na titular: ");
+            double bal  = readDouble("  Nachalen balans (lv.): ");
+            double rate = readDouble("  Lihven procent (npr. 0.03 za 3%): ");
+            double minb = readDouble("  Minimalen balans (lv., default 10): ");
+            bank.addAccount(make_shared<SavingsAccount>(num, name, bal, rate, minb));
+
+        } else if (choice == 2) {
+            // Добави разплащателна сметка
+            cout << "--- Nova razplashtatelna smetka ---\n";
+            string num  = readWord("  Nomer na smetka (npr. BG02CHK): ");
+            string name = readLine("  Ime na titular: ");
+            double bal  = readDouble("  Nachalen balans (lv.): ");
+            double fee  = readDouble("  Taksa za teglene (lv.): ");
+            double ovr  = readDouble("  Overdraft limit (lv., 0 za bez): ");
+            bank.addAccount(make_shared<CheckingAccount>(num, name, bal, fee, ovr));
+
+        } else if (choice == 3) {
+            // Депозит
+            cout << "--- Depozit ---\n";
+            string num = readWord("  Nomer na smetka: ");
+            double amt = readDouble("  Suma za depozit (lv.): ");
+            auto acc = bank.findAccount(num);
+            if (!acc) {
+                cout << "  [GRESHKA] Smetka " << num << " ne e nameren.\n";
+            } else {
+                bool ok = acc->deposit(amt);
+                cout << "  Rezultat: " << (ok ? "[USPESHNO]" : "[NEUSPESHNO]") << "\n";
+                if (ok) cout << "  Nov balans: " << fixed << setprecision(2) << acc->getBalance() << " lv.\n";
+            }
