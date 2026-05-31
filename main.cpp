@@ -112,3 +112,75 @@ int main() {
                 cout << "  Rezultat: " << (ok ? "[USPESHNO]" : "[NEUSPESHNO]") << "\n";
                 if (ok) cout << "  Nov balans: " << fixed << setprecision(2) << acc->getBalance() << " lv.\n";
             }
+} else if (choice == 4) {
+            // Теглене
+            cout << "--- Teglene ---\n";
+            string num = readWord("  Nomer na smetka: ");
+            double amt = readDouble("  Suma za teglene (lv.): ");
+            auto acc = bank.findAccount(num);
+            if (!acc) {
+                cout << "  [GRESHKA] Smetka " << num << " ne e nameren.\n";
+            } else {
+                bool ok = acc->withdraw(amt);
+                cout << "  Rezultat: " << (ok ? "[USPESHNO]" : "[NEUSPESHNO]") << "\n";
+                if (ok) cout << "  Nov balans: " << fixed << setprecision(2) << acc->getBalance() << " lv.\n";
+            }
+
+        } else if (choice == 5) {
+            // Превод
+            cout << "--- Prevod mezhdu smetki ---\n";
+            string from = readWord("  Ot smetka (nomer): ");
+            string to   = readWord("  Kam smetka (nomer): ");
+            double amt  = readDouble("  Suma za prevod (lv.): ");
+            bank.transfer(from, to, amt);
+
+        } else if (choice == 6) {
+            // Начисли лихва
+            bank.applyInterestToAll();
+
+        } else if (choice == 7) {
+            // История
+            cout << "--- Istoriq na transakcii ---\n";
+            string num = readWord("  Nomer na smetka: ");
+            bank.showAccountHistory(num);
+
+        } else if (choice == 8) {
+            // По баланс
+            bank.showAccountsByBalance();
+
+        } else if (choice == 9) {
+            // Статистика
+            bank.showBankStats();
+
+        } else if (choice == 10) {
+            // Изтрий
+            cout << "--- Iztrivane na smetka ---\n";
+            string num = readWord("  Nomer na smetka za iztrivane: ");
+            bank.removeAccount(num);
+
+        } else if (choice == 11) {
+            // Всички сметки
+            bank.showAllAccounts();
+
+        } else if (choice == 12) {
+            // Търсене по титуляр
+            cout << "--- Tarsene po titular ---\n";
+            string name = readLine("  Ime (ili chast ot ime): ");
+            bank.showAccountsByHolder(name);
+
+        } else if (choice == 13) {
+            // Експорт
+            cout << "--- Export na otchet ---\n";
+            string filename = readWord("  Ime na fail (npr. report.txt): ");
+            bank.exportReport(filename);
+
+        } else if (choice == 0) {
+            cout << "  Dovizhdane!\n";
+
+        } else {
+            cout << "  [GRESHKA] Nevalidna opciq. Opitai otnovo.\n";
+        }
+    }
+
+    return 0;
+}
