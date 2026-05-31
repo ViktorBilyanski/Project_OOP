@@ -30,3 +30,14 @@ void SavingsAccount::applyInterest() {
          << "%): " << fixed << setprecision(2) << interest << " lv. -> Nov balans: "
          << balance << " lv.\n";
 }
+
+double SavingsAccount::getInterestRate() const { return interestRate; }
+string SavingsAccount::getType() const { return "Spestovna"; }
+
+void SavingsAccount::displayInfo() const {
+    cout << "  [SPESTOVNA]     ";
+    Account::displayInfo();
+    cout << "                   Lihven % : "
+         << fixed << setprecision(2) << (interestRate * 100) << "% | Min. balans: "
+         << minimumBalance << " lv.\n";
+}
