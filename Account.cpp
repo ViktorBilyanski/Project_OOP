@@ -43,3 +43,11 @@ void Account::displayHistory() const {
     }
     cout << string(52, '-') << "\n";
 }
+
+double Account::getBalance() const { return balance; }
+string Account::getAccountNumber() const { return accountNumber; }
+string Account::getHolderName() const { return holderName; }
+
+void Account::logExternalTransaction(string type, double amount) {
+    transactionHistory.push_back(Transaction(type, amount));
+}
